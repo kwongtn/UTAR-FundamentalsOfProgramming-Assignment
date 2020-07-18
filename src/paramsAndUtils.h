@@ -4,6 +4,9 @@
 #include <fstream>
 #include <cstring>
 #include <sstream>
+#include <iomanip>
+#include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -56,4 +59,113 @@ inline void clearScreen() {
 
 inline void pause() {
 	system("pause");
+}
+
+inline void printLine(int num = 30, char myChar = '=') {
+	for (int i = 0; i < num; i++) {
+		cout << myChar;
+	}
+	cout << endl;
+}
+
+inline string combinationOfPositivesString(DATA_ROW row) {
+	return to_string(row.combination_of_positives[0]) + "-" +
+		to_string(row.combination_of_positives[1]) + "-" +
+		to_string(row.combination_of_positives[2]);
+}
+
+inline int inputInt(bool prompter = true, bool forceInput = true) {
+	std::string myString = "";
+	int i;
+	while (true) {
+		cin.clear();
+		if (prompter) {
+			cout << "\n> ";
+		}
+		getline(cin, myString);
+
+		if (myString == "" && !forceInput) {
+			return -1000;
+		}
+
+		try
+		{
+			i = std::stoi(myString);
+			break;
+		}
+		catch (std::invalid_argument const& e)
+		{
+			cout << "Bad input: std::invalid_argument thrown. Please re-input." << '\n';
+			!prompter ? prompter = !prompter : prompter;
+			continue;
+		}
+		catch (std::out_of_range const& e)
+		{
+			cout << "Integer overflow: std::out_of_range thrown. Please re-input." << '\n';
+			!prompter ? prompter = !prompter : prompter;
+			continue;
+		}
+
+	}
+
+	return i;
+
+}
+
+inline bool decider(std::string custString = "Your selection (y / n): ") {
+	bool x = true;
+	std::string selection;
+	while (true) {
+		cout << custString;
+		try {
+			getline(cin, selection);
+			if (selection == "y" || selection == "Y") {
+				x = true;
+				break;
+			}
+			else if (selection == "n" || selection == "N") {
+				x = false;
+				break;
+			}
+			else {
+				throw "Error";
+			}
+			if (cin.fail() || selection != "y" || selection != "Y" || selection != "n" || selection != "N") {
+				throw "Error";
+			}
+		}
+		catch (...) {
+			cout << "Please enter a valid character." << endl;
+			pause();
+		}
+	}
+	return x;
+
+}
+
+inline std::string returnDatetimeString(bool includeDashes = false)
+{
+	time_t t = time(nullptr);
+	struct tm nowTime;
+	localtime_s(&nowTime, &t);
+
+	std::stringstream ss;
+	ss << nowTime.tm_year + 1900;
+	if (includeDashes) { ss << "-"; }
+	if (nowTime.tm_mon < 10) { ss << "0"; }
+	ss << nowTime.tm_mon;
+	if (includeDashes) { ss << "-"; }
+	if (nowTime.tm_mday < 10) { ss << "0"; }
+	ss << nowTime.tm_mday;
+	if (includeDashes) { ss << " "; }
+	if (nowTime.tm_hour < 10) { ss << "0"; }
+	ss << nowTime.tm_hour;
+	if (includeDashes) { ss << ":"; }
+	if (nowTime.tm_min < 10) { ss << "0"; }
+	ss << nowTime.tm_min;
+	if (includeDashes) { ss << ":"; }
+	if (nowTime.tm_sec < 10) { ss << "0"; }
+	ss << nowTime.tm_sec;
+
+	return ss.str();
 }

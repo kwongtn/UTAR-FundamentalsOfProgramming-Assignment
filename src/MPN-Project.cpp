@@ -124,11 +124,154 @@ bool loadFile() {
 
 }
 
+// List everything
+void list() {
+	clearScreen();
+
+	// Output headers
+	cout
+		<< setw(29) << left << "Combination of Positives" << "|"
+		<< setw(24) << left << " MPN Index per 100ml" << "|"
+		<< setw(30) << "    95% Confidence Limits    " << "|"
+		<< endl;
+
+	cout
+		<< setw(29) << left << "" << "|"
+		<< setw(24) << left << "" << "|"
+		<< setw(15) << "    Lower    " << "|"
+		<< setw(14) << "    Upper    " << "|"
+		<< endl;
+
+	printLine(29 + 24 + 30 + 4);
+
+	int dataCount = 0;
+	// Output data
+	for (DATA_ROW row : rows) {
+		if (row.isUsed) {
+			cout
+				<< setw(29) << left << combinationOfPositivesString(row) << "|"
+				<< setw(24) << left << row.mpn_index_per_100ml << "|"
+				<< setw(15) << left << row.conf_limit.lower << "|"
+				<< setw(14) << left << row.conf_limit.upper << "|"
+				<< endl;
+
+			dataCount++;
+		}
+	}
+
+	cout << dataCount << " rows of data outputted." << endl;
+	pause();
+}
+
+// Export to file
+void exportToFile() {
+StartExport:
+	clearScreen();
+	string outputFilePath = "";
+	cout << "Please input the path of the file you want to output to, or input \'d\' for a default name: \n> ";
+	getline(cin, outputFilePath);
+
+	if (outputFilePath == "d") {
+		outputFilePath == "./" + returnDatetimeString(true) + "_output.txt";
+	}
+
+	cout << endl;
+
+	int rowCounter = 0;
+	ofstream outputFile;
+	if (!outputFile.is_open()) {
+		cout << "File open error. Do you want to try again?" << endl;
+		if (decider()) {
+			goto StartExport;
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		for (DATA_ROW row : rows) {
+			if (row.isUsed) {
+				cout << "\rExporting row " << rowCounter + 1;
+
+				outputFile
+					<< row.combination_of_positives[0] << "\t"
+					<< row.combination_of_positives[1] << "\t"
+					<< row.combination_of_positives[2] << "\t"
+					<< row.mpn_index_per_100ml << "\t"
+					<< row.conf_limit.lower << "\t"
+					<< row.conf_limit.upper << "\t"
+					<< "\n";
+				rowCounter++;
+			}
+		}
+
+		cout << "Total " << rowCounter << " rows exported to: \n" << outputFilePath;
+
+	}
+}
 
 int main() {
 
 	while (!loadFile()) {};
 
+	while (true) {
+		// Main menu
+		clearScreen();
+		const vector<string> menu = {
+			"List", "Search", "Insert", "Update", "Query"
+		};
+
+		for (int i = 0; i < menu.size(); i++) {
+			cout
+				<< setw(5) << left << i + 1
+				<< menu[i]
+				<< endl;
+		}
+
+		cout << setw(5) << left << to_string(10) << "Exit" << endl;
+
+		cout << "Please select an option from the menu above.";
+		int selection = inputInt();
+
+		if ((selection > menu.size() && selection != 10) || selection < 1) {
+			cout << "Please input a valid option. ";
+			pause();
+			continue;
+		}
+		else {
+			switch (selection) {
+
+			case 1:
+				list();
+				break;
+
+			case 2:
+				// Search by Combination of Positives
+				break;
+
+			case 3:
+				// Insert data
+				break;
+
+			case 4:
+				// Update existing data
+				break;
+
+			case 5:
+				// Query data
+				break;
+
+			case 10:
+				// Need to program exit sequence here that exports all data into a file
+				exportToFile();
+				cout << "Goodbye. " << endl;
+				exit(0);
+			}
+		}
+
+
+
+	}
 
 	return 0;
 }
