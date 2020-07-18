@@ -10,7 +10,6 @@ using namespace std;
 const int ARR_SIZE = 125;
 const int EXP_SIZE = 5;
 
-
 struct DATA_ROW {
 	int combination_of_positives[3] = { 0 };
 	int mpn_index_per_100ml = 0;
@@ -21,6 +20,7 @@ struct DATA_ROW {
 
 	} conf_limit;
 
+	bool isUsed = false;
 };
 
 inline int toInt(std::string myString) {

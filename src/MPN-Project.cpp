@@ -83,7 +83,7 @@ bool loadFile() {
 						throw new string(ss.str());
 					}
 
-					// Reading the 95% Lower Confidence Limit
+					// Reading the 95% Upper Confidence Limit
 					try {
 						string tempStr = "";
 						inputFile >> tempStr;
@@ -98,6 +98,7 @@ bool loadFile() {
 						throw new string(ss.str());
 					}
 
+					rows[rowCounter].isUsed = true;
 					rowCounter++;
 
 				}
