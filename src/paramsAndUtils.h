@@ -49,3 +49,11 @@ inline bool testEmptyString(string str) {
 		return true;
 	}
 }
+
+inline void clearScreen() {
+	system("cls");
+}
+
+inline void pause() {
+	system("pause");
+}

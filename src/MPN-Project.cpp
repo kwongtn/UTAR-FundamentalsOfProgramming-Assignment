@@ -7,12 +7,14 @@ DATA_ROW rows[125];
 
 // Loads file
 bool loadFile() {
+	clearScreen();
 	string inputFilePath = "";
 	cout << "Please input the path of the file you want to load: \n> ";
 	getline(cin, inputFilePath);
 
 	cout << endl;
 
+	int rowCounter = 0;
 	ifstream inputFile(inputFilePath);
 	if (!inputFile.is_open()) {
 		cout << "File open error. Please try again." << endl;
@@ -20,7 +22,6 @@ bool loadFile() {
 		return false;
 	}
 	else {
-		int rowCounter = 0;
 		try {
 			// Reads the file sequentially
 			while (!inputFile.eof()) {
@@ -107,22 +108,26 @@ bool loadFile() {
 		}
 		catch (string* str) {
 			cout << endl << "ERROR: " << *str << "\n\nExiting..." << endl;
-			system("pause");
+			pause();
 			exit(1);
 		}
 		catch (...) {
 			cout << endl << "ERROR: Unknown file read error on row " << rowCounter + 1 << ". \n\nExiting..." << endl;
-			system("pause");
+			pause();
 			exit(1);
 		}
 	}
+
+	cout << "\rSuccesfully imported " << rowCounter << " rows." << endl;
+	pause();
+	return true;
 
 }
 
 
 int main() {
 
-	while (loadFile()) {};
+	while (!loadFile()) {};
 
 
 	return 0;
