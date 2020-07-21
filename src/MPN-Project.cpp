@@ -3,6 +3,7 @@
 
 #include "paramsAndUtils.h"
 void queryByCombinationOfPositives(DATA_ROW[]);
+string inputFilePath = "";
 
 DATA_ROW rows[ARR_SIZE];
 
@@ -254,11 +255,14 @@ StartExport:
 	heading("Export file");
 	printLine();
 	string outputFilePath = "";
-	cout << "Please input the path of the file you want to output to, or input \'d\' for a default name: \n> ";
+	cout << "Please input the path of the file you want to output to, or input \'d\' for a default name, or \'r\' to overwrite your input file: \n> ";
 	getline(cin, outputFilePath);
 
 	if (outputFilePath == "d") {
-		outputFilePath == "./" + returnDatetimeString(true) + "_output.txt";
+		outputFilePath = "./" + returnDatetimeString(true) + "_output.txt";
+	}
+	else if (outputFilePath == "r") {
+		outputFilePath = inputFilePath;
 	}
 
 	cout << endl;
