@@ -3,7 +3,7 @@
 
 #include "paramsAndUtils.h"
 
-DATA_ROW rows[125];
+DATA_ROW rows[ARR_SIZE];
 
 // Loads file
 bool loadFile() {
@@ -174,6 +174,48 @@ void list() {
 	pause();
 }
 
+// Search using MPN data
+void search() {
+	clearScreen();
+
+	DATA_ROW* compare = new DATA_ROW;
+
+	cout << "Please input the positive triplet number:\n";
+
+	cout << "1st number: ";
+	compare->combination_of_positives[0] = inputIntWithLimit(5, false);
+
+	cout << "2nd number: ";
+	compare->combination_of_positives[1] = inputIntWithLimit(5, false);
+
+	cout << "3rd number: ";
+	compare->combination_of_positives[2] = inputIntWithLimit(5, false);
+
+	int matchedEntry = -1;
+	for (int i = 0; i < ARR_SIZE; i++) {
+		if (compareCombinationOfPositivesString(rows[i], *compare)) {
+			matchedEntry = i;
+			break;
+		}
+	}
+
+	if (matchedEntry == -1) {
+		cout << "No entries found with the combination of positive string of " << combinationOfPositivesString(*compare) << ". \n";
+		pause();
+	}
+	else {
+		clearScreen();
+		cout << "\n\nFor " << combinationOfPositivesString(rows[matchedEntry]) << ", " << endl;
+		cout << "MPN = " << rows[matchedEntry].mpn_index_per_100ml << "; " << endl;
+		cout << "95% of sampled contain between " << rows[matchedEntry].conf_limit.lower << " and " << rows[matchedEntry].conf_limit.upper << " bacteria/ml." << endl;
+
+		pause();
+	}
+
+
+
+}
+
 // Export to file
 void exportToFile() {
 StartExport:
@@ -257,7 +299,7 @@ int main() {
 				break;
 
 			case 2:
-				// Search by Combination of Positives
+				search();
 				break;
 
 			case 3:

@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <vector>
 #include <chrono>
+#include <limits>
 
 using namespace std;
 
@@ -124,6 +125,21 @@ inline int inputInt(bool prompter = true, bool forceInput = true) {
 
 	return i;
 
+}
+
+inline int inputIntWithLimit(int limit, bool prompter = true, bool forceInput = true) {
+	while (true) {
+		int myInt = inputInt(prompter, forceInput);
+
+		if ((myInt < 0) || (myInt > limit)) {
+			cout << "Invalid input, please try again. The number should be not more than " << limit;
+			pause();
+			continue;
+		}
+		else {
+			return myInt;
+		}
+	}
 }
 
 inline bool decider(std::string custString = "Your selection (y / n): ") {
