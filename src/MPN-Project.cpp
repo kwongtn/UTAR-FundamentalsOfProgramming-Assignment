@@ -456,6 +456,34 @@ StartUpdate:
 	}
 }
 
+// Delete
+void deleteRow() {
+StartDelete:
+	cout << "We will search using the positive triplet number to narrow down the entry you want to delete. " << endl;
+	pause();
+
+	int target = search();
+	if (target == -1) {
+		cout << "Do you want to try again? " << endl;
+		if (decider()) {
+			goto StartDelete;
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		cout << "Are you sure you want to delete the entry shown above? " << endl;
+		if (!decider()) {
+			return;
+		}
+		else {
+			rows[target].isUsed = false;
+			cout << "Entry deleted." << endl;
+			pause();
+		}
+	}
+}
 
 int main() {
 
@@ -465,7 +493,7 @@ int main() {
 		// Main menu
 		clearScreen();
 		const vector<string> menu = {
-			"List", "Search", "Insert", "Update", "Query"
+			"List", "Search", "Insert", "Update", "Query", "Delete"
 		};
 
 		for (int i = 0; i < menu.size(); i++) {
@@ -506,6 +534,10 @@ int main() {
 
 			case 5:
 				queryByCombinationOfPositives(rows);
+				break;
+
+			case 6:
+				deleteRow();
 				break;
 
 			case 10:
