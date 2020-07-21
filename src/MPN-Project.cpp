@@ -54,8 +54,8 @@ bool checkDuplicate(DATA_ROW myRow) {
 
 // Loads file
 bool loadFile() {
-	clearScreen();
-	string inputFilePath = "";
+	heading("Load from File");
+	printLine();
 	cout << "Please input the path of the file you want to load: \n> ";
 	getline(cin, inputFilePath);
 
@@ -185,36 +185,16 @@ bool loadFile() {
 
 // List everything
 void list() {
+	heading("Listing");
+	printLine();
 	sortRows();
-	clearScreen();
-
-	// Output headers
-	cout
-		<< setw(29) << left << "Combination of Positives" << "|"
-		<< setw(24) << left << " MPN Index per 100ml" << "|"
-		<< setw(30) << "    95% Confidence Limits    " << "|"
-		<< endl;
-
-	cout
-		<< setw(29) << left << "" << "|"
-		<< setw(24) << left << "" << "|"
-		<< setw(15) << "    Lower    " << "|"
-		<< setw(14) << "    Upper    " << "|"
-		<< endl;
-
-	printLine(29 + 24 + 30 + 4);
+	outputListingHeaders();
 
 	int dataCount = 0;
 	// Output data
 	for (DATA_ROW row : rows) {
 		if (row.isUsed) {
-			cout
-				<< setw(29) << left << combinationOfPositivesString(row) << "|"
-				<< setw(24) << left << row.mpn_index_per_100ml << "|"
-				<< setw(15) << left << row.conf_limit.lower << "|"
-				<< setw(14) << left << row.conf_limit.upper << "|"
-				<< endl;
-
+			outputRow(row);
 			dataCount++;
 		}
 	}
@@ -226,6 +206,7 @@ void list() {
 // Search using MPN data
 int search() {
 	heading("Search");
+	printLine();
 	sortRows();
 
 	DATA_ROW* compare = new DATA_ROW;
@@ -255,6 +236,7 @@ int search() {
 	}
 	else {
 		heading("Search Results");
+		printLine();
 		cout << "\n\nFor " << combinationOfPositivesString(rows[matchedEntry]) << ", " << endl;
 		cout << "MPN = " << rows[matchedEntry].mpn_index_per_100ml << "; " << endl;
 		cout << "95% of samples contain between " << rows[matchedEntry].conf_limit.lower << " and " << rows[matchedEntry].conf_limit.upper << " bacteria/ml." << endl;
@@ -269,7 +251,8 @@ int search() {
 // Export to file
 void exportToFile() {
 StartExport:
-	clearScreen();
+	heading("Export file");
+	printLine();
 	string outputFilePath = "";
 	cout << "Please input the path of the file you want to output to, or input \'d\' for a default name: \n> ";
 	getline(cin, outputFilePath);
@@ -315,7 +298,8 @@ StartExport:
 
 // Insert
 void insert() {
-	clearScreen();
+	heading("Insert Entry");
+	printLine();
 
 	// Check if the array is full
 	int size = 0;
@@ -331,7 +315,8 @@ void insert() {
 	// Get combination of positives triplet, with validation
 	DATA_ROW userInput;
 	while (true) {
-		clearScreen();
+		heading("Insert Entry -> Entry details");
+		printLine();
 		cout << "Please input the positive triplet number:\n";
 
 		cout << "1st number: ";
@@ -370,7 +355,8 @@ void insert() {
 		if (userInput.conf_limit.lower >= userInput.conf_limit.upper) {
 			cout << "ERROR: The upper limit must be lesser than the lower limit. Try again? \n";
 			if (decider()) {
-				clearScreen();
+				heading("Insert Entry -> Entry details");
+				printLine();
 				continue;
 			}
 			else {
@@ -396,6 +382,8 @@ void insert() {
 // Update
 void update() {
 StartUpdate:
+	heading("Update Entry");
+	printLine();
 	cout << "We will search using the positive triplet number to narrow down the entry you want to edit. " << endl;
 	pause();
 
@@ -415,7 +403,9 @@ StartUpdate:
 			return;
 		}
 		else {
-			DATA_ROW userInput = rows[target]; 
+			heading("Update Entry -> Entry Details");
+			printLine();
+			DATA_ROW userInput = rows[target];
 			cout << "Please input the MPN Index per 100ml: ";
 			userInput.mpn_index_per_100ml = inputInt();
 
@@ -429,7 +419,8 @@ StartUpdate:
 				if (userInput.conf_limit.lower >= userInput.conf_limit.upper) {
 					cout << "ERROR: The upper limit must be lesser than the lower limit. Try again? \n";
 					if (decider()) {
-						clearScreen();
+						heading("Update Entry -> Entry Details");
+						printLine();
 						continue;
 					}
 					else {
@@ -459,6 +450,8 @@ StartUpdate:
 // Delete
 void deleteRow() {
 StartDelete:
+	heading("Delete Entry");
+	printLine();
 	cout << "We will search using the positive triplet number to narrow down the entry you want to delete. " << endl;
 	pause();
 
@@ -491,7 +484,8 @@ int main() {
 
 	while (true) {
 		// Main menu
-		clearScreen();
+		heading("Main Menu");
+		printLine();
 		const vector<string> menu = {
 			"List", "Search", "Insert", "Update", "Query", "Delete"
 		};
@@ -505,7 +499,7 @@ int main() {
 
 		cout << setw(5) << left << to_string(10) << "Exit" << endl;
 
-		cout << "Please select an option from the menu above.";
+		cout << "\nPlease select an option from the menu above.";
 		int selection = inputInt();
 
 		if ((selection > menu.size() && selection != 10) || selection < 1) {

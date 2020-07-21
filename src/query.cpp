@@ -7,6 +7,9 @@ const vector<string> menu = {
 };
 
 void queryOutputByCombinationOfPositives(DATA_ROW rows[], int selection, int criteria) {
+	heading("Query by Combination of Positives -> Results");
+	printLine();
+
 	cout << menu[selection] << " with " << criteria << " positives are:" << endl;
 	outputListingHeaders();
 
@@ -25,7 +28,8 @@ void queryOutputByCombinationOfPositives(DATA_ROW rows[], int selection, int cri
 
 void queryByCombinationOfPositives(DATA_ROW rows[]) {
 	while (true) {
-		heading("Search via:");
+		heading("Query by Combination of Positives -> Sub-Menu");
+		printLine();
 
 		for (int i = 0; i < menu.size(); i++) {
 			cout
@@ -44,6 +48,9 @@ void queryByCombinationOfPositives(DATA_ROW rows[]) {
 			pause();
 			continue;
 		}
+
+		heading("Query by Combination of Positives -> Criteration");
+		printLine();
 
 		cout << "How many positives should the " << menu[selection - 1] << "?";
 		int criteria = inputIntWithLimit(5);
