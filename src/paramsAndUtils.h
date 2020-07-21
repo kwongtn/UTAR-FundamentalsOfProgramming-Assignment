@@ -212,3 +212,14 @@ inline int findFirstUnused(DATA_ROW rows[]) {
 
 	return -1;
 }
+
+inline void heading(string myString = "") {
+	system("cls");
+	cout << "############################################" << endl;
+	cout << "##            MPN Data System            ###" << endl;
+	cout << "############################################" << endl << endl;
+
+	if (myString != "") {
+		cout << myString << endl;
+	}
+}

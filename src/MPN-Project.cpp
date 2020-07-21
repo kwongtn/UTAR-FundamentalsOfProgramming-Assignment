@@ -224,7 +224,7 @@ void list() {
 
 // Search using MPN data
 int search() {
-	clearScreen();
+	heading("Search");
 	sortRows();
 
 	DATA_ROW* compare = new DATA_ROW;
@@ -253,10 +253,10 @@ int search() {
 		pause();
 	}
 	else {
-		clearScreen();
+		heading("Search Results");
 		cout << "\n\nFor " << combinationOfPositivesString(rows[matchedEntry]) << ", " << endl;
 		cout << "MPN = " << rows[matchedEntry].mpn_index_per_100ml << "; " << endl;
-		cout << "95% of sampled contain between " << rows[matchedEntry].conf_limit.lower << " and " << rows[matchedEntry].conf_limit.upper << " bacteria/ml." << endl;
+		cout << "95% of samples contain between " << rows[matchedEntry].conf_limit.lower << " and " << rows[matchedEntry].conf_limit.upper << " bacteria/ml." << endl;
 
 		pause();
 	}
@@ -380,6 +380,7 @@ void insert() {
 	}
 
 	try {
+		userInput.isUsed = true;
 		rows[findFirstUnused(rows)] = userInput;
 	}
 	catch (...) {
