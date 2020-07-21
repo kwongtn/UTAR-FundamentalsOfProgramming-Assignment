@@ -223,7 +223,7 @@ void list() {
 }
 
 // Search using MPN data
-void search() {
+int search() {
 	clearScreen();
 	sortRows();
 
@@ -261,7 +261,7 @@ void search() {
 		pause();
 	}
 
-
+	return matchedEntry;
 
 }
 
@@ -391,6 +391,70 @@ void insert() {
 	sortRows();
 }
 
+// Update
+void update() {
+StartUpdate:
+	cout << "We will search using the positive triplet number to narrow down the entry you want to edit. " << endl;
+	pause();
+
+	int target = search();
+	if (target == -1) {
+		cout << "Do you want to try again? " << endl;
+		if (decider()) {
+			goto StartUpdate;
+		}
+		else {
+			return;
+		}
+	}
+	else {
+		cout << "Are you sure you want to edit the entry shown above? " << endl;
+		if (!decider()) {
+			return;
+		}
+		else {
+			DATA_ROW userInput = rows[target]; 
+			cout << "Please input the MPN Index per 100ml: ";
+			userInput.mpn_index_per_100ml = inputInt();
+
+			while (true) {
+				cout << "Please input the lower bound of the 95% confidence range: ";
+				userInput.conf_limit.lower = inputInt();
+
+				cout << "Please input the upper bound of the 95% confidence range: ";
+				userInput.conf_limit.upper = inputInt();
+
+				if (userInput.conf_limit.lower >= userInput.conf_limit.upper) {
+					cout << "ERROR: The upper limit must be lesser than the lower limit. Try again? \n";
+					if (decider()) {
+						clearScreen();
+						continue;
+					}
+					else {
+						return;
+					}
+				}
+				break;
+			}
+
+			try {
+				rows[target] = userInput;
+			}
+			catch (...) {
+				cout << "An unknown error occured." << endl;
+				return;
+			}
+
+			cout << "Succesfully updated row." << endl;
+			pause();
+		}
+
+
+
+	}
+}
+
+
 int main() {
 
 	while (!loadFile()) {};
@@ -435,7 +499,7 @@ int main() {
 				break;
 
 			case 4:
-				// Update existing data
+				update();
 				break;
 
 			case 5:
