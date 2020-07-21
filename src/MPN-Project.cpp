@@ -5,6 +5,42 @@
 
 DATA_ROW rows[ARR_SIZE];
 
+/*
+	Sort the rows based on the combination of positives
+*/
+void sortRows() {
+	// Place scores for the rows in order to sort them later
+	int scores[ARR_SIZE];
+	for (int i = 0; i < ARR_SIZE; i++) {
+		if (rows[i].isUsed == false) {
+			scores[i] = numeric_limits<int>::max();
+		}
+		else {
+			scores[i] =
+				(100 * rows[i].combination_of_positives[0]) +
+				(10 * rows[i].combination_of_positives[1]) +
+				(1 * rows[i].combination_of_positives[2]);
+
+		}
+	}
+
+	// Sorting
+	int sortCounter = 0;
+	do {
+		sortCounter = 0;
+		for (int i = 0; i < ARR_SIZE - 1; i++) {
+			if (scores[i] > scores[i + 1]) {
+				swap(scores[i], scores[i + 1]);
+				swap(rows[i], rows[i + 1]);
+				sortCounter++;
+			}
+		}
+
+
+	} while (sortCounter > 0);
+
+}
+
 // Loads file
 bool loadFile() {
 	clearScreen();
@@ -129,6 +165,7 @@ bool loadFile() {
 		}
 	}
 
+	sortRows();
 	cout << "\rSuccesfully imported " << rowCounter << " rows." << endl;
 	pause();
 	return true;
@@ -137,6 +174,7 @@ bool loadFile() {
 
 // List everything
 void list() {
+	sortRows();
 	clearScreen();
 
 	// Output headers
@@ -177,6 +215,7 @@ void list() {
 // Search using MPN data
 void search() {
 	clearScreen();
+	sortRows();
 
 	DATA_ROW* compare = new DATA_ROW;
 
