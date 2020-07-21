@@ -199,3 +199,16 @@ inline std::string returnDatetimeString(bool includeDashes = false)
 
 	return ss.str();
 }
+
+/*
+	Finds the index number of the first unused row.
+*/
+inline int findFirstUnused(DATA_ROW rows[]) {
+	for (int i = 0; i < ARR_SIZE; i++) {
+		if (!rows[i].isUsed) {
+			return i;
+		}
+	}
+
+	return -1;
+}

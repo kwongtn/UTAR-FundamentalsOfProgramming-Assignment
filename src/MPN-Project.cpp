@@ -41,6 +41,16 @@ void sortRows() {
 
 }
 
+// Check if the row exist based on postive triplet
+bool checkDuplicate(DATA_ROW myRow) {
+	for (DATA_ROW row : rows) {
+		if (compareCombinationOfPositivesString(row, myRow)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 // Loads file
 bool loadFile() {
 	clearScreen();
@@ -302,6 +312,85 @@ StartExport:
 	}
 }
 
+// Insert
+void insert() {
+	clearScreen();
+
+	// Check if the array is full
+	int size = 0;
+	for (DATA_ROW row : rows) {
+		row.isUsed ? size++ : 0;
+	}
+	if (size == ARR_SIZE) {
+		cout << "Array is full at " << ARR_SIZE << " entries." << endl;
+		pause();
+		return;
+	}
+
+	// Get combination of positives triplet, with validation
+	DATA_ROW userInput;
+	while (true) {
+		clearScreen();
+		cout << "Please input the positive triplet number:\n";
+
+		cout << "1st number: ";
+		userInput.combination_of_positives[0] = inputIntWithLimit(5, false);
+
+		cout << "2nd number: ";
+		userInput.combination_of_positives[1] = inputIntWithLimit(5, false);
+
+		cout << "3rd number: ";
+		userInput.combination_of_positives[2] = inputIntWithLimit(5, false);
+
+		if (checkDuplicate(userInput)) {
+			cout << "The positive triplet number is a duplicate, do you want to try again? \n";
+			if (decider()) {
+				continue;
+			}
+			else {
+				return;
+			}
+		}
+		else {
+			break;
+		}
+	}
+
+	cout << "Please input the MPN Index per 100ml: ";
+	userInput.mpn_index_per_100ml = inputInt();
+
+	while (true) {
+		cout << "Please input the lower bound of the 95% confidence range: ";
+		userInput.conf_limit.lower = inputInt();
+
+		cout << "Please input the upper bound of the 95% confidence range: ";
+		userInput.conf_limit.upper = inputInt();
+
+		if (userInput.conf_limit.lower >= userInput.conf_limit.upper) {
+			cout << "ERROR: The upper limit must be lesser than the lower limit. Try again? \n";
+			if (decider()) {
+				clearScreen();
+				continue;
+			}
+			else {
+				return;
+			}
+		}
+		break;
+	}
+
+	try {
+		rows[findFirstUnused(rows)] = userInput;
+	}
+	catch (...) {
+		cout << "Unknown error occured." << endl;
+		pause();
+		return;
+	}
+
+	sortRows();
+}
+
 int main() {
 
 	while (!loadFile()) {};
@@ -342,7 +431,7 @@ int main() {
 				break;
 
 			case 3:
-				// Insert data
+				insert();
 				break;
 
 			case 4:
