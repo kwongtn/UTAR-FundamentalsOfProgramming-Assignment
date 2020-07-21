@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MPN-Project.cpp" />
+    <ClCompile Include="query.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="paramsAndUtils.h" />

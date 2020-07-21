@@ -223,3 +223,29 @@ inline void heading(string myString = "") {
 		cout << myString << endl;
 	}
 }
+
+inline void outputListingHeaders() {
+	cout
+		<< setw(29) << left << "Combination of Positives" << "|"
+		<< setw(24) << left << " MPN Index per 100ml" << "|"
+		<< setw(30) << "    95% Confidence Limits    " << "|"
+		<< endl;
+
+	cout
+		<< setw(29) << left << "" << "|"
+		<< setw(24) << left << "" << "|"
+		<< setw(15) << "    Lower    " << "|"
+		<< setw(14) << "    Upper    " << "|"
+		<< endl;
+
+	printLine(29 + 24 + 30 + 4);
+}
+
+inline void outputRow(DATA_ROW row) {
+	cout
+		<< setw(29) << left << combinationOfPositivesString(row) << "|"
+		<< setw(24) << left << row.mpn_index_per_100ml << "|"
+		<< setw(15) << left << row.conf_limit.lower << "|"
+		<< setw(14) << left << row.conf_limit.upper << "|"
+		<< endl;
+}

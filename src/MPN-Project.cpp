@@ -2,6 +2,7 @@
 //
 
 #include "paramsAndUtils.h"
+void queryByCombinationOfPositives(DATA_ROW[]);
 
 DATA_ROW rows[ARR_SIZE];
 
@@ -504,7 +505,7 @@ int main() {
 				break;
 
 			case 5:
-				// Query data
+				queryByCombinationOfPositives(rows);
 				break;
 
 			case 10:
