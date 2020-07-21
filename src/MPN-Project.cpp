@@ -54,6 +54,17 @@ bool loadFile() {
 
 					}
 
+					// Check if the entry is a duplicate. If yes abort the program, else write into actual array
+					for (int i = 0; i < rowCounter; i++) {
+						if (compareCombinationOfPositivesString(rows[i], rows[rowCounter])) {
+							std::stringstream ss;
+							ss << "Row " << i + 1 << " is a duplicate at the combination of positives. Please check the source file.";
+							throw ss.str();
+						}
+
+					}
+
+
 					// Reading the MPN Index per 100 ml
 					try {
 						string tempStr = "";

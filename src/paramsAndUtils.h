@@ -74,6 +74,20 @@ inline string combinationOfPositivesString(DATA_ROW row) {
 		to_string(row.combination_of_positives[2]);
 }
 
+inline bool compareCombinationOfPositivesString(DATA_ROW row1, DATA_ROW row2, bool respectUsedUnused = true) {
+	if (respectUsedUnused) {
+		if (!row1.isUsed) {
+			return false;
+		}
+	}
+	if (combinationOfPositivesString(row1) == combinationOfPositivesString(row2)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 inline int inputInt(bool prompter = true, bool forceInput = true) {
 	std::string myString = "";
 	int i;
