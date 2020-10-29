@@ -15,7 +15,7 @@ void queryOutputByCombinationOfPositives(DATA_ROW rows[], int selection, int cri
 
 	int counter = 0;
 	for (int i = 0; i < ARR_SIZE; i++) {
-		if (rows[i].combination_of_positives[selection] == criteria) {
+		if (rows[i].combination_of_positives[selection] == criteria && rows[i].isUsed) {
 			outputRow(rows[i]);
 			counter++;
 		}
